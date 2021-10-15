@@ -1,0 +1,89 @@
+<!doctype html>
+<!--声明文档类型:html-->
+<html>
+<!--超文本标记语言  根目录节点标签-->
+
+<head>
+	<!--头部:非可视化标签-->
+	<meta charset="utf-8">
+	<!--字符编码:国际编码-->
+	<title>canvas雨滴-玄武老师</title>
+	<meta name="description" content="描述:对网页文档的大概的介绍">
+	<!--关键词:提供给搜索引擎搜索网站使用-->
+	<meta name="keywords" content="关键词1,关键词2">
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		#mycanvas {
+			background: black;
+		}
+	</style>
+</head>
+
+<body>
+	<!--身体 可视化标签-->
+	<canvas id="mycanvas">您的浏览器不支持画布，请您更换浏览器!!</canvas>
+	<script type="text/javascript">
+		(
+			() => {
+				var can = document.getElementById("mycanvas");
+				var ctx = can.getContext("2d");
+				//画布宽度
+				var wid = window.innerWidth;
+				//画布高度
+				var hei = window.innerHeight;
+				can.width = wid;
+				can.height = hei;
+
+				//雪花数目
+				var snow = 50;
+				//雪花坐标、半径
+				var arr = []; //保存各圆坐标及半径
+				for (var i = 0; i < snow; i++) {
+					arr.push({
+						x: Math.random() * wid,
+						y: Math.random() * hei,
+						r: Math.random() * 10 + 1
+					})
+				}
+
+				//画雪花
+				function DrawSnow() {
+					ctx.clearRect(0, 0, wid, hei);
+					ctx.fillStyle = "white";
+					ctx.beginPath();
+					for (var i = 0; i < snow; i++) {
+						var p = arr[i];
+						ctx.moveTo(p.x, p.y);
+						ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI, false);
+					}
+					ctx.fill();
+					SnowFall();
+					ctx.closePath();
+				}
+
+				//雪花飘落
+				function SnowFall() {
+					for (var i = 0; i < snow; i++) {
+						var p = arr[i];
+						p.y += Math.random() * 2 + 1;
+						if (p.y > hei) {
+							p.y = 0;
+						}
+						p.x += Math.random() * 2 + 1;
+						if (p.x > wid) {
+							p.x = 0;
+						}
+					}
+				}
+
+				setInterval(DrawSnow, 50);
+			}
+		)()
+	</script>
+</body>
+
+</html>
